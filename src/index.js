@@ -4,6 +4,7 @@ import desriptionInner from './js/descriptionInner';
 import isCapslock from './js/capslock';
 import shiftDown from './js/shiftDown';
 import shiftUp from './js/shiftUp';
+import checkUserLang from './js/checkUserLang';
 
 const body = document.querySelector('body');
 
@@ -57,6 +58,12 @@ buttons.forEach((el) => {
 
 document.addEventListener('keydown', (event) => {
   const button = keyboard.querySelector(`[data-code=${event.code}]`);
+
+  // auto сhange lang
+  lang = checkUserLang(event) || lang;
+  localStorage.setItem('lang', lang);
+  createKeyboard(keyboard, lang);
+  description.innerHTML = desriptionInner(lang);
 
   // сhange lang
   if (keyArr.includes(event.code)) {
@@ -144,7 +151,7 @@ document.addEventListener('mousedown', (event) => {
 
   // textarea
   if (button.classList.contains('button_text')
-  || button.classList.contains('button_digit')) {
+    || button.classList.contains('button_digit')) {
     textarea.value += button.innerHTML;
   }
 });
